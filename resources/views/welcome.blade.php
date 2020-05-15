@@ -83,10 +83,10 @@
                 <div class="title m-b-md">
                     Lycée Polyvalent de St Joseph Punaauia
                 </div>
-
+{{-- 
                 <div class="links">
                     <a href="{{url('task')}}">Travaux</a>
-                </div>
+                </div> --}}
             </div>
         </div>
     </body>
