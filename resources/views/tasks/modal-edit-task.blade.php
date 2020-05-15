@@ -15,6 +15,7 @@
                         <label for="user">Demande de</label>
                         <input type="text" class="form-control" id="user_edit" name="user_edit" placeholder="Nom du demandeur" disabled value={{ Auth::user()->name}}>
                         <input type="hidden" class="form-control" name="user_id" id="user_id_edit" value={{ Auth::id()}}>
+                        <input type="hidden" class="form-control" name="task_id" id="task_id_edit" value={{ $task->id }}>
                     </div>
 
                     <div class="form-group">

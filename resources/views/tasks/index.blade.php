@@ -54,8 +54,10 @@
               </ul></td>
               <td class="text-center">
                 <span class="show-modal btn btn-info btn-sm" 
+                  data-approve_id="{{$task->approve_id}}" 
+                  data-type_id="{{$task->type_id}}" 
                   data-id="{{$task->id}}" 
-                  data-user="{{$task->user->name}}" 
+                  data-user="{{$task->user->name}}"
                   data-description="{{$task->description}}" 
                   data-date="{{$task->date}}"
                   data-buildings="{{ App\Task::find($task->id)->buildings }}"
@@ -68,6 +70,8 @@
                 </span>
                 @if($task->approve_id == 1 || Auth::user()->type_id == 1)
                 <span class="edit-modal btn btn-warning btn-sm" 
+                  data-approve_id="{{$task->approve_id}}" 
+                  data-type_id="{{$task->type_id}}" 
                   data-id="{{$task->id}}" 
                   data-user="{{$task->user->name}}" 
                   data-description="{{$task->description}}" 
@@ -81,7 +85,9 @@
                   </svg>   
                 </span>
                 <span class="delete-modal btn btn-danger btn-sm" 
-                  data-id="{{$task->id}}" 
+                  data-id="{{$task->id}}"
+                  data-approve_id="{{$task->approve_id}}" 
+                  data-type_id="{{$task->type_id}}"
                   data-user="{{$task->user->name}}" 
                   data-description="{{$task->description}}" 
                   data-date="{{$task->date}}"
@@ -99,11 +105,11 @@
               @if(Auth::user()->type_id == 1)
               <td class="text-center">
                 <span class="edit-approve-modal btn btn-warning btn-sm" 
-                  data-id="{{$task->id}}" 
+                  data-id="{{$task->id}}"
                   data-description="{{ $task->description }}" 
                   data-approve_id="{{$task->approve_id}}">
                   Valider<i class="fa fa-check" style="color:white"></i>
-              </span>
+                </span>
               </td>
               @endif
           </tr>

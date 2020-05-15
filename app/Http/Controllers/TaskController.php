@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Task;
+use App\Type;
+use App\User;
+use App\Approve;
 use App\Building;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,7 +59,7 @@ class TaskController extends Controller
 
             // Récupérer le nom du demandeur dynamiquement
             $user = $task->user()->pluck('name')->toArray();
-            $task->user = implode(",", $user);
+            $task->user = $user;
 
             //Récupérer les id des Bâtiments
             $buildings_id = $request->input('buildings_id');
@@ -82,9 +85,16 @@ class TaskController extends Controller
             $usersNames = $task->users()->pluck('name')->toArray();
             $task->usersNames = $usersNames;
 
+            //Récupérer l'id Approve
+            $approveId = $task->approve()->pluck('id')->toArray();
+            $task->approveId = $approveId;
             //Récupérer le nom Approve
             $approveName = $task->approve()->pluck('name');
             $task->approveName = $approveName;
+
+            //Récupérer le nom Approve
+            $userTypeId = Auth::user()->type_id;
+            $task->userTypeId = $userTypeId;
 
             return response()->json($task);
         }
@@ -100,7 +110,13 @@ class TaskController extends Controller
         $task->save();
 
         $task->userName = $request->userName;
-        $task->buildingsNames = $request->buildingsNames;
+        $task->buildingsNames = $task->buildings()->pluck('name')->toArray();
+        $task->classroomsNames = $task->classrooms()->pluck('name')->toArray();
+        $task->usersNames = $task->users()->pluck('name')->toArray();
+        $task->approveName = Approve::find($task->approve_id)->name;
+        $task->userTypeId = Type::find($task->user->type_id)->id;
+        
+        // dd($task->approveName);exit;
         
         return response()->json($task);
     }   

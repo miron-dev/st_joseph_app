@@ -10,7 +10,7 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" role="form">
-
+                    @csrf
                     <div class="form-group add">
                         <label for="user">Demande de</label>
                         <input type="text" class="form-control" id="user" placeholder="Nom du demandeur" disabled value={{ Auth::user()->name}}>
