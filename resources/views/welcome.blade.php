@@ -81,7 +81,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Lycée Polyvalent de St Joseph Punaauia
                 </div>
 
                 <div class="links">
