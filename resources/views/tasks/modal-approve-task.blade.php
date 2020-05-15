@@ -26,6 +26,7 @@
                             <input type="text" class="form-control" id="aid" disabled>
                         </div>
                     </div>
+                    <input type="hidden" id="task_id" name="task_id">
                 </form>
                 <div class="modal-footer">
                     <button type="button" class="btn actionBtn" data-dismiss="modal">

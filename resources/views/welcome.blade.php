@@ -80,7 +80,7 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
+                <div class="title">
                     Lycée Polyvalent de St Joseph Punaauia
                 </div>
 {{-- 

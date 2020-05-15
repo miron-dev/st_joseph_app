@@ -92,7 +92,7 @@ class TaskController extends Controller
             $approveName = $task->approve()->pluck('name');
             $task->approveName = $approveName;
 
-            //Récupérer le nom Approve
+            //Récupérer l'id du type
             $userTypeId = Auth::user()->type_id;
             $task->userTypeId = $userTypeId;
 
@@ -131,6 +131,8 @@ class TaskController extends Controller
         $task = Task::find($request->id);
         $task->approve_id = $request->approve_id;
         $task->save();
+        
+        $task->approveName = Approve::find($request->approve_id)->name;
 
         return response()->json([$task]);
     }

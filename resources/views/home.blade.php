@@ -14,7 +14,11 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    Bienvenue {{Auth::user()->name}}
+                    <div class="links">
+                        <p class="mt-3">Accéder aux :</p>
+                        <a href="{{url('task')}}">Travaux</a>
+                    </div>
                 </div>
             </div>
         </div>

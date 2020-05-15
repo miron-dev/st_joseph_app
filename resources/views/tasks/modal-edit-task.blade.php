@@ -57,7 +57,7 @@
                     {{-- ne pas oublier de deplacer --}}
                 </form> 
                     <div class="modal-footer">
-                        <button class="btn btn-warning actionBtn_edit">
+                        <button class="btn btn-warning actionBtn_edit" data-dismiss="modal">
                             <span id="footer_action_button_edit" class="glyphicon"></span>
                         </button>
                         <button class="btn btn-warning" type="button" data-dismiss="modal">
