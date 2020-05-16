@@ -176,29 +176,26 @@
                                         data-user="`+data.user+`" 
                                         data-description="`+data.description+`" 
                                         data-date="`+data.date+`"
-                                        data-buildings="`+data.buildingsNames+`"
-                                        data-classrooms="`+data.classroomsNames+`"
-                                        data-users_task="`+data.usersNames+`">
+                                        data-buildings="[` + data.buildings_id + `]"
+                                        data-classrooms="[`+data.classrooms_id+`]"
+                                        data-users_task="[`+data.users_id+`]">
                                         <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
                                         <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 00.5.5H4v.5a.5.5 0 00.5.5H5v.5a.5.5 0 00.5.5H6v-1.5a.5.5 0 00-.5-.5H5v-.5a.5.5 0 00-.5-.5H3z" clip-rule="evenodd"/>
                                         </svg>   
                                     </span>
                                     <span class="delete-modal btn btn-danger btn-sm" 
-                                        data-id="`+data.id+`" 
-                                        data-user="`+data.user+`" 
-                                        data-description="`+data.description+`" 
-                                        data-date="`+data.date+`"
-                                        data-buildings="`+data.buildingsNames+`"
-                                        data-classrooms="`+data.classroomsNames+`"
-                                        data-users_task="`+data.usersNames+`">
+                                        data-id="`+data.id+`"
+                                        data-buildings="[`+data.buildings_id+`]"
+                                        data-classrooms="[`+data.classrooms_id+`]"
+                                        data-users_task="[`+data.users_id+`]">
                                         <svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
                                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
                                         </svg>
                                     </span>`
                                 +"</td>"+
-                                "<td class='text-center'>" + data.approveName + "</td>"+
+                                `<td class="text-center" id="approveName" data-approveName="`+data.approveName+`">`+data.approveName+`</td>`+
                                 `<td class="text-center">
                                     <span class="edit-approve-modal btn btn-warning btn-sm" 
                                     data-id="`+data.id+`" 
@@ -271,7 +268,7 @@
         });
         $('#description').val('');
         $('#datepicker').val('');
-        $("#buildings_id").val('').trigger('change') ;
+        $("#buildings_id").val(null).trigger('change') ;
         $("#classrooms_id").val('').trigger('change') ;
         $("#users_id").val('').trigger('change') ;
     });
@@ -279,54 +276,6 @@
     
 // ========================================== Modal Edit Task ==========================================
     $(document).on('click', '.edit-modal', function() {
-        var buildingsSelected = [];
-        var classroomsSelected = [];
-        var userTaskSelected = [];
-        
-        // Recuperation et Affichage des valeurs des Batiments dans le Select
-        $.each($(this).data('buildings'), function( index, building ) {
-            $.each($("#buildings_id_edit option"), function(value){            
-                var buildId = ($('#buildings_id_edit option[class="building'+value+'"]').val());
-                if(building.id == buildId)
-                {
-                    buildingsSelected.push(buildId);
-                }
-            });
-            
-        });
-        console.log("selection des batiments : ",buildingsSelected);
-        //==> Notify any JS components that the value changed
-        $("#buildings_id_edit").val(buildingsSelected).trigger('change');
-
-        // Recuperation et Affichage des valeurs des Salles dans le Select
-        $.each($(this).data('classrooms'), function( index, classroom ) {
-            $.each($("#classrooms_id_edit option"), function(value){            
-                var classId = ($('#classrooms_id_edit option[class="classroom'+value+'"]').val());
-                if(classroom.id == classId)
-                {
-                    classroomsSelected.push(classId);
-                }
-            });
-            
-        });
-        console.log("selection des salles : ",classroomsSelected);
-        //==> Notify any JS components that the value changed
-        $("#classrooms_id_edit").val(classroomsSelected).trigger('change');
-
-        // Recuperation et Affichage des valeurs des Traitants dans le Select
-        $.each($(this).data('users_task'), function( index, userTask ) {
-            $.each($("#users_id_edit option"), function(value){            
-                var userTaskId = ($('#users_id_edit option[class="user_task'+value+'"]').val());
-                if(userTask.id == userTaskId)
-                {
-                    userTaskSelected.push(userTaskId);
-                }
-            });
-            
-        });
-        console.log("selection des traitants : ",userTaskSelected);
-        //==> Notify any JS components that the value changed
-        $("#users_id_edit").val(userTaskSelected).trigger('change');
 
         $('#footer_action_button_edit').text("Modifier");
         $('#footer_action_button_edit').addClass('glyphicon-check');
@@ -335,23 +284,29 @@
         $('.actionBtn_edit').removeClass('btn-danger');
         $('.actionBtn_edit').addClass('edit');
         $('.modal-title').text('Modifier la tâche');
-        // $('.deleteContent').hide();
         $('.form-horizontal').show();
+
+        // On récupère les valeurs passées dans le buton => data-
+        // Puis on les affectes dans le formulaire d'édition
         $('#user_id_edit').val($(this).data('user'));
         $('#description_edit').val($(this).data('description'));
         $('#datepicker_edit').val($(this).data('date'));
-        $('#buildings_id_edit').val($(this).data('buildings'));
+        $('#buildings_id_edit').val($(this).data('buildings')).trigger('change');
+        $('#classrooms_id_edit').val($(this).data('classrooms')).trigger('change');
+        $('#users_id_edit').val($(this).data('users_task')).trigger('change');
         $('#task_id_edit').val($(this).data('id'));
         $('#edit').modal('show');
+        console.log('buildings', $(this).data('buildings'))
     });
     
     $('.modal-footer').on('click', '.edit', function() {
         var id = $('#task_id_edit').val();
-        console.log(id);
+        console.log('task id', id);
         $.ajax({
             type: 'POST',
             url: 'editTask',
             data: {
+                // on récupère les données du formulaire
                 // on envoie dans le controller editTask
                 '_token': '{{ csrf_token() }}',
                 'id': $('#task_id_edit').val(), 
@@ -364,6 +319,9 @@
                 'usersNames': $('.edit-modal').data('users_task'),
                 'approveName': $('.edit-modal').data('approve'),
                 'userTypeId': $('.edit-modal').data('type_id'),
+                'buildings_id': $('#buildings_id_edit').val(),
+                'classrooms_id': $('#classrooms_id_edit').val(),
+                'users_id': $('#users_id_edit').val(),
             },
             success: function(data) {
                 console.log('EDIT :', data)
@@ -375,21 +333,9 @@
                         "<td>" + data.userName + "</td>"+
                         "<td>" + data.description + "</td>"+
                         "<td>" + data.date + "</td>"+
-                        "<td><ul>"+
-                            $.each(data.buildingsNames, function( index, value ) {
-                                "<li>"+ value +"</li>"
-                            })
-                        +"</ul></td>"+
-                        "<td><ul>"+
-                            $.each(data.classroomsNames, function( index, value ) {
-                                "<li>"+ value +"</li>"
-                            })
-                        +"</ul></td>"+
-                        "<td><ul>"+
-                            $.each(data.usersNames, function( index, value ) {
-                                "<li>"+ value +"</li>"
-                            })
-                        +"</ul></td>"+
+                        "<td>" + data.buildingsNames + "</td>"+
+                        "<td>" + data.classroomsNames + "</td>"+
+                        "<td>" + data.usersNames + "</td>"+
                         `<td class="text-center">`+
                             `<span class="show-modal btn btn-info btn-sm" 
                                 data-id="`+data.id+`" 
@@ -409,29 +355,26 @@
                                 data-user="`+data.user+`" 
                                 data-description="`+data.description+`" 
                                 data-date="`+data.date+`"
-                                data-buildings="`+data.buildingsNames+`"
-                                data-classrooms="`+data.classroomsNames+`"
-                                data-users_task="`+data.usersNames+`">
+                                data-buildings="[`+ data.buildings_id+ `]"
+                                data-classrooms="[`+data.classrooms_id+`]"
+                                data-users_task="[`+data.users_id+`]">
                                 <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
                                 <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 00.5.5H4v.5a.5.5 0 00.5.5H5v.5a.5.5 0 00.5.5H6v-1.5a.5.5 0 00-.5-.5H5v-.5a.5.5 0 00-.5-.5H3z" clip-rule="evenodd"/>
                                 </svg>   
                             </span>
                             <span class="delete-modal btn btn-danger btn-sm" 
-                                data-id="`+data.id+`" 
-                                data-user="`+data.user+`" 
-                                data-description="`+data.description+`" 
-                                data-date="`+data.date+`"
-                                data-buildings="`+data.buildingsNames+`"
-                                data-classrooms="`+data.classroomsNames+`"
-                                data-users_task="`+data.usersNames+`">
+                                data-id="`+data.id+`"
+                                data-buildings="[`+data.buildings_id+`]"
+                                data-classrooms="[`+data.classrooms_id+`]"
+                                data-users_task="[`+data.users_id+`]">
                                 <svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
                                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
                                 </svg>
                             </span>`
                         +"</td>"+
-                        `<td class='text-center'>` + data.approveName + "</td>"+
+                        `<td class="text-center" id="approveName" data-approveName="`+data.approveName+`">`+data.approveName+`</td>`+
                         `<td class="text-center">
                             <span class="edit-approve-modal btn btn-warning btn-sm" 
                             data-id="`+data.id+`" 
@@ -536,9 +479,9 @@
         $('.modal-title').text('Supprimer une tâche');
         $('.id').text($(this).data('id'));
         $('.deleteContent').show();
-        // $('.form-horizontal').hide();
         $('.title').html($(this).data('title'));
         $('#myModal').modal('show');
+        console.log($(this).data('buildings'));
     });
     
     $('.modal-footer').on('click', '.delete', function(){
@@ -549,6 +492,9 @@
             data: {
                 '_token': '{{ csrf_token() }}',
                 'id': $('.id').text(),
+                'buildings_id' : $(this).data('buildings'),
+                'classrooms_id' : $(this).data('classrooms'),
+                'users_id' : $(this).data('users_task'),
             },
             success: function(data){
                 console.log("supp data", data)
@@ -600,17 +546,9 @@
                 'approve_id': $("#approveID").val()
             },
             success: function(data) {
-                console.log('approve modal', data[0].id);
+                console.log('approve modal', data);
                 $('.task' + data[0].id).find("td[id='approveName']").replaceWith(" "+
-                    `<td class="text-center" id="approveName" data-approveName="`+data[0].approveName+`">`+data[0].approveName+`</td>
-                    <td class="text-center">
-                        <span class="edit-approve-modal btn btn-warning btn-sm" 
-                        data-id="`+data[0].id+`"
-                        data-description="`+data[0].description+`" 
-                        data-approve_id="`+data[0].approve_id+`">
-                        Valider<i class="fa fa-check" style="color:white"></i>
-                        </span>
-                    </td>`
+                    `<td class="text-center" id="approveName" data-approveName="`+data[0].approveName+`">`+data[0].approveName+`</td>`
                 );
             }
         });

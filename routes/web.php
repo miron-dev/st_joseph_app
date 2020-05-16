@@ -32,6 +32,7 @@ Auth::routes();
 
   Route::middleware(['auth'])->group(function () {
     Route::get('/approval', 'HomeController@approval')->name('approval');
+    Route::resource('users','UserController');
 
     Route::middleware(['approved'])->group(function () {
         Route::get('/home', 'HomeController@index')->name('home');
@@ -40,9 +41,9 @@ Auth::routes();
         Route::post('editTask','TaskController@editTask');
         Route::delete('deleteTask','TaskController@deleteTask');
       });
-      
+
       Route::middleware(['admin'])->group(function () {
-        Route::get('/users', 'UserController@index')->name('admin.users.index');
+        Route::get('/approve', 'UserController@indexAdmin')->name('admin.users.indexAdmin');
         Route::get('/users/{user_id}/approve', 'UserController@approve')->name('admin.users.approve');
         Route::post('approveTask','TaskController@editApprove');
     });

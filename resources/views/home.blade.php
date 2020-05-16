@@ -17,7 +17,10 @@
                     Bienvenue {{Auth::user()->name}}
                     <div class="links">
                         <p class="mt-3">Accéder aux :</p>
-                        <a href="{{url('task')}}">Travaux</a>
+                        <a href="{{url('task')}}">Travaux</a><br>
+                        @if(Auth::user()->type_id == 1)
+                            <a href="{{url('approve')}}">Utilisateurs</a>
+                        @endif
                     </div>
                 </div>
             </div>

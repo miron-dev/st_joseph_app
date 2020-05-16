@@ -21,7 +21,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2"for="aid">Tâche</label>
+                        <label class="control-label col-sm-2"for="aid"></label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="aid" disabled>
                         </div>

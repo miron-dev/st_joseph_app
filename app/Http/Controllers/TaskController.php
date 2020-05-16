@@ -63,24 +63,24 @@ class TaskController extends Controller
 
             //Récupérer les id des Bâtiments
             $buildings_id = $request->input('buildings_id');
-            $task->buildings_id = $buildings_id;
+            $task->buildings_id = array_map('intval',$buildings_id);
             $task->buildings()->attach($buildings_id);
             //Récupérer les noms des Bâtiments
             $buildingsNames = $task->buildings()->pluck('name')->toArray();
             $task->buildingsNames = $buildingsNames;
 
             //Récupérer les id des Classes
-            $classrooms = $request->input('classrooms_id');
-            $task->classrooms = $classrooms;
-            $task->classrooms()->attach($classrooms);
+            $classrooms_id = $request->input('classrooms_id');
+            $task->classrooms_id = array_map('intval',$classrooms_id);
+            $task->classrooms()->attach($classrooms_id);
             //Récupérer les noms des Classes
             $classroomsNames = $task->classrooms()->pluck('name')->toArray();
             $task->classroomsNames = $classroomsNames;
 
             //Récupérer les id des Traitants
-            $users = $request->input('users_id');
-            $task->users = $users;
-            $task->users()->attach($users);
+            $users_id = $request->input('users_id');
+            $task->users_id = array_map('intval',$users_id);
+            $task->users()->attach($users_id);
             //Récupérer les noms des Traitants
             $usersNames = $task->users()->pluck('name')->toArray();
             $task->usersNames = $usersNames;
@@ -109,6 +109,21 @@ class TaskController extends Controller
         $task->date = $request->date;
         $task->save();
 
+        //Récupérer les id des Bâtiments
+        $buildings_id = $request->input('buildings_id');
+        $task->buildings_id = array_map('intval',$buildings_id);
+        $task->buildings()->sync($task->buildings_id);
+
+        //Récupérer les id des Classes
+        $classrooms_id = $request->input('classrooms_id');
+        $task->classrooms_id = array_map('intval',$classrooms_id);
+        $task->classrooms()->sync($task->classrooms_id);
+
+        //Récupérer les id des Traitants
+        $users_id = $request->input('users_id');
+        $task->users_id = array_map('intval',$users_id);
+        $task->users()->sync($task->users_id);
+
         $task->userName = $request->userName;
         $task->buildingsNames = $task->buildings()->pluck('name')->toArray();
         $task->classroomsNames = $task->classrooms()->pluck('name')->toArray();
@@ -122,8 +137,15 @@ class TaskController extends Controller
     }   
   
     public function deleteTask(request $request){
+        $taskDelete = Task::find($request->id);
         $task = Task::destroy($request->id);
+
+        $taskDelete->buildings()->detach($taskDelete->buildings_id);
+        $taskDelete->classrooms()->detach($taskDelete->classrooms_id);
+        $taskDelete->users()->detach($taskDelete->users_id);
+        
         return response()->json();
+
     }
 
     public function editApprove(request $request){
