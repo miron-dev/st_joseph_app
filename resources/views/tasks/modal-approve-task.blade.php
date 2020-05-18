@@ -1,4 +1,4 @@
-{{-- Modal Form Delete task --}}
+{{-- Modal Form approve task --}}
 <div id="modalApproveTask" class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -21,7 +21,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2"for="aid"></label>
+                        <label class="control-label col-sm-2"for="aid">Tâche :</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="aid" disabled>
                         </div>

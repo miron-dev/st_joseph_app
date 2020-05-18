@@ -17,13 +17,13 @@
                         <input type="hidden" class="form-control" name="user_id" id="user_id" value={{ Auth::id()}}>
                     </div>
 
-                    <div class="form-group add">
-                        <label for="description">Description</label>
-                        <input type="text" class="form-control" id="description" name="description" placeholder="Your description Here" required>
+                    <div class="form-group">
+                        <label for="description">Description <span style="color:red">*</span></label>
+                        <textarea type="text" class="form-control" id="description" name="description" placeholder="Your description Here" rows="6" cols="150" required></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="date">Date</label>
+                        <label for="date">Date<span style="color:red">*</span></label>
                         <input class="form-control" id="datepicker" name="date" placeholder="Your date Here" required>
                     </div>  
 
@@ -56,10 +56,10 @@
 
                     <div class="modal-footer">
                         <button class="btn btn-warning" type="submit" id="add">
-                            <span class="glyphicon glyphicon-plus"></span>Save task
+                            <span class="glyphicon glyphicon-plus"></span>Enregistrer
                         </button>
                         <button class="btn btn-warning" type="button" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-remobe"></span>Close
+                            <span class="glyphicon glyphicon-remobe"></span>Fermer
                         </button>
                     </div>
                 </form>

@@ -13,10 +13,10 @@
   </div>
 
   <div class="row">
-    <div class="table table-responsive">
-      <table class="table table-bordered" id="table">
+    <table class="table table-bordered table-hover" id="table">
+      <thead>
         <tr class="text-center">
-          <th width="150px">No</th>
+          <th>No</th>
           <th>Demandeur</th>
           <th>Description</th>
           <th>Date</th>
@@ -26,32 +26,40 @@
           <th>Action</th>
           <th>Approuvée</th>
           @if(Auth::user()->type_id == 1)
-          <th>Admin action</th>
+          <th>Valider</th>
           @endif
         </tr>
-        {{ csrf_field() }}
-        <?php  $no=1; ?>
+      </thead>
+      {{ csrf_field() }}
+      <?php  $no=1; ?>
+      <tbody>
         @foreach ($tasks as $task)
           <tr class="task{{$task->id}}">
               <td>{{ $task->id }}</td>
               <td>{{ $task->user->name }}</td>
               <td>{{ $task->description }}</td>
               <td>{{ $task->date }}</td>
-              <td><ul style="list-style: none" class="flex justify-content">
+              <td>
+                <ul style="list-style: none" class="flex justify-content">
                 @foreach(App\Task::find($task->id)->buildings as $building)
                   <li class="b"> {{ $building->name}} </li>  
                 @endforeach
-              </ul></td>
-              <td><ul style="list-style: none" class="flex justify-content">
+                </ul>
+              </td>
+              <td>
+                <ul style="list-style: none" class="flex justify-content">
                 @foreach(App\Task::find($task->id)->classrooms as $classroom)
                   <li> {{ $classroom->name}} </li>  
                 @endforeach
-              </ul></td>
-              <td><ul style="list-style: none" class="flex justify-content">
+                </ul>
+              </td>
+              <td>
+                <ul style="list-style: none" class="flex justify-content">
                 @foreach(App\Task::find($task->id)->users as $user)
                   <li> {{ $user->name}} </li>  
                 @endforeach
-              </ul></td>
+                </ul>
+              </td>
               <td class="text-center">
                 <span class="show-modal btn btn-info btn-sm" 
                   data-approve_id="{{$task->approve_id}}" 
@@ -99,22 +107,19 @@
               </td>
               <td class="text-center" id="approveName" data-approveName="{{ $task->approve->name }}">{{ $task->approve->name }}</td>
               @if(Auth::user()->type_id == 1)
-              <td class="text-center">
-                <span class="edit-approve-modal btn btn-warning btn-sm" 
-                  data-id="{{$task->id}}"
-                  data-description="{{ $task->description }}" 
-                  data-approve_id="{{$task->approve_id}}">
-                  Valider<i class="fa fa-check" style="color:white"></i>
-                </span>
-              </td>
+                <td class="text-center">
+                  <span class="edit-approve-modal btn btn-warning btn-sm" 
+                    data-id="{{$task->id}}"
+                    data-description="{{ $task->description }}" 
+                    data-approve_id="{{$task->approve_id}}">
+                    Valider<i class="fa fa-check" style="color:white"></i>
+                  </span>
+                </td>
               @endif
           </tr>
-          @endforeach
-        </table>
-        {{-- a gérer dans javascript --}}
-        <p id="noData" class="text-center"> 
-        </p>
-    </div>
+        @endforeach
+      </tbody>
+    </table>
     {{$tasks->links()}}
   </div>
 

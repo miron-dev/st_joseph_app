@@ -9,7 +9,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                <div id="err">
+                </div>
+                <form class="form-horizontal" role="form" novalidate>
                     @csrf                    
                     <div class="form-group">
                         <label for="user">Demande de</label>
@@ -19,12 +21,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="description">Description</label>
-                        <input type="text" class="form-control" id="description_edit" name="description" placeholder="Your description Here" value="" required>
+                        <label for="description">Description<span style="color:red">*</span></label>
+                        <textarea type="text" class="form-control" id="description_edit" name="description" placeholder="Your description Here" value="" rows="6" cols="150" required></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="date">date</label>
+                        <label for="date">Date<span style="color:red">*</span></label>
                         <input class="form-control" id="datepicker_edit" name="date" placeholder="Your date Here" value="" required>
                     </div>  
 
@@ -55,15 +57,15 @@
                         </select>
                     </div>
                     {{-- ne pas oublier de deplacer --}}
-                </form> 
                     <div class="modal-footer">
                         <button class="btn btn-warning actionBtn_edit" data-dismiss="modal">
                             <span id="footer_action_button_edit" class="glyphicon"></span>
                         </button>
                         <button class="btn btn-warning" type="button" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-remobe"></span>Close
+                            <span class="glyphicon glyphicon-remobe"></span>Fermer
                         </button>
                     </div>
+                </form> 
             </div>
         </div>
     </div>

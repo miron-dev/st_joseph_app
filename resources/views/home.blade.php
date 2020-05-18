@@ -19,7 +19,8 @@
                         <p class="mt-3">Accéder aux :</p>
                         <a href="{{url('task')}}">Travaux</a><br>
                         @if(Auth::user()->type_id == 1)
-                            <a href="{{url('approve')}}">Utilisateurs</a>
+                            <a href="{{url('approve')}}">Approuver utilisateurs</a><br>
+                            <a href="{{url('users')}}">Utilisateurs</a>
                         @endif
                     </div>
                 </div>

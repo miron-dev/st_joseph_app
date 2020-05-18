@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function types()
     {
-        return $this->hasMany(Type::class);
+        return $this->belongsTo(Type::class);
     }
 }

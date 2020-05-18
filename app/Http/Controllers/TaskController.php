@@ -9,6 +9,7 @@ use App\Approve;
 use App\Building;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -22,7 +23,13 @@ class TaskController extends Controller
         if(Auth::user()->type_id == 1)
         {
             $tasks = Task::paginate(20);
-        } else {
+        }else if(Auth::user()->type_id == 4){
+            $user = User::find(Auth::id());
+            $tasks = $user->tasks;
+            // dd($user);
+            return view('tasks.agents.index', compact('tasks'));
+        }
+         else {
             $tasks = Task::where('user_id', Auth::id())->paginate(20);
         }
         return view('tasks.index',compact('tasks'));
@@ -32,6 +39,9 @@ class TaskController extends Controller
         $rules = array(
             'description' => 'required',
             'date' => 'required',
+            // 'buildings_id' => 'required',
+            // 'classrooms_id' => 'required',
+            // 'users_id' => 'required',
         );
 
         $validator = Validator::make($request->all(), $rules);
@@ -51,7 +61,6 @@ class TaskController extends Controller
             $task->approve_id = $this->approve;
             $task->save();
 
-
             /**
              * @var Variables Préparation des variables
              * Récupération des variables par jquery => view('template.blade.php') method('create')
@@ -63,27 +72,46 @@ class TaskController extends Controller
 
             //Récupérer les id des Bâtiments
             $buildings_id = $request->input('buildings_id');
-            $task->buildings_id = array_map('intval',$buildings_id);
-            $task->buildings()->attach($buildings_id);
-            //Récupérer les noms des Bâtiments
-            $buildingsNames = $task->buildings()->pluck('name')->toArray();
-            $task->buildingsNames = $buildingsNames;
+            if($buildings_id) // ajouter cette fonctionnalité si les champs ne sont pas requis
+            {
+                $task->buildings_id = array_map('intval',$buildings_id);
+                $task->buildings()->attach($buildings_id);
+                //Récupérer les noms des Bâtiments
+                $buildingsNames = $task->buildings()->pluck('name')->toArray();
+                $task->buildingsNames = $buildingsNames;
+            } else {
+                $task->buildings_id = [];
+                $task->buildingsNames = "";
+            }
 
             //Récupérer les id des Classes
             $classrooms_id = $request->input('classrooms_id');
-            $task->classrooms_id = array_map('intval',$classrooms_id);
-            $task->classrooms()->attach($classrooms_id);
-            //Récupérer les noms des Classes
-            $classroomsNames = $task->classrooms()->pluck('name')->toArray();
-            $task->classroomsNames = $classroomsNames;
+            if($classrooms_id) // ajouter cette fonctionnalité si les champs ne sont pas requis
+            {
+                $task->classrooms_id = array_map('intval',$classrooms_id);
+                $task->classrooms()->attach($classrooms_id);
+                //Récupérer les noms des Classes
+                $classroomsNames = $task->classrooms()->pluck('name')->toArray();
+                $task->classroomsNames = $classroomsNames;
+            } else {
+                $task->classrooms_id = [];
+                $task->classroomsNames = "";
+            }
+
 
             //Récupérer les id des Traitants
             $users_id = $request->input('users_id');
+            if($users_id) // ajouter cette fonctionnalité si les champs ne sont pas requis
+            {
             $task->users_id = array_map('intval',$users_id);
             $task->users()->attach($users_id);
             //Récupérer les noms des Traitants
             $usersNames = $task->users()->pluck('name')->toArray();
             $task->usersNames = $usersNames;
+            } else {
+                $task->users_id = [];
+                $task->usersNames = "";
+            }
 
             //Récupérer l'id Approve
             $approveId = $task->approve()->pluck('id')->toArray();
@@ -102,6 +130,17 @@ class TaskController extends Controller
     }
   
     public function editTask(Request $request){
+        $rules = array(
+            'description' => 'required',
+            'date' => 'required',
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails())
+        {
+            return Response::json(array('errors'=> $validator->getMessageBag()->toarray()));
+        }
+        
         //===> les donnees sont sensibles à la casse
         $task = Task::find($request->id); // on récupère l'id dans data dans ajax
         $task->user_id = $request->user_id;
@@ -111,17 +150,26 @@ class TaskController extends Controller
 
         //Récupérer les id des Bâtiments
         $buildings_id = $request->input('buildings_id');
-        $task->buildings_id = array_map('intval',$buildings_id);
+        if($buildings_id)
+        {
+            $task->buildings_id = array_map('intval',$buildings_id);
+        }
         $task->buildings()->sync($task->buildings_id);
 
         //Récupérer les id des Classes
         $classrooms_id = $request->input('classrooms_id');
-        $task->classrooms_id = array_map('intval',$classrooms_id);
+        if($classrooms_id)
+        {
+            $task->classrooms_id = array_map('intval',$classrooms_id);
+        }
         $task->classrooms()->sync($task->classrooms_id);
 
         //Récupérer les id des Traitants
         $users_id = $request->input('users_id');
-        $task->users_id = array_map('intval',$users_id);
+        if($users_id)
+        {
+            $task->users_id = array_map('intval',$users_id);
+        }
         $task->users()->sync($task->users_id);
 
         $task->userName = $request->userName;

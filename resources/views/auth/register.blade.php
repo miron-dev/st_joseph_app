@@ -33,7 +33,9 @@
                                 <select class="form-control @error('type_id') is-invalid @enderror" name="type_id" id="type_id" required autocomplete="type_id" autofocus>
                                     <option value="" selected disabled></option>
                                     @foreach (App\Type::all() as $type)
+                                    @if($type->id != 1)
                                         <option value="{{$type->id}}">{{$type->name}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                                 

@@ -1,49 +1,50 @@
 @extends('layouts.app')
    
 @section('content')
-    <div class="row">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Edit Product</h2>
+<div class="row">
+    <div class="col-sm-8 offset-sm-2">
+       <h1 class="display-3">Modifier mon profile</h1>
+     <div>
+       @if ($errors->any())
+         <div class="alert alert-danger">
+           <ul>
+               @foreach ($errors->all() as $error)
+                 <li>{{ $error }}</li>
+               @endforeach
+           </ul>
+         </div><br />
+       @endif
+         <form method="post" action="{{ route('users.store') }}">
+             @csrf
+             <div class="form-group">    
+                 <label for="name">Nom:</label>
+                 <input type="text" class="form-control" name="name" value="{{$user->name}}"/>
+             </div>
+
+             <div class="form-group">    
+                <label for="email">Email:</label>
+                <input type="text" class="form-control" email="name" value="{{$user->email}}"/>
             </div>
-            <div class="pull-right">
-                <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>
+
+            <div class="form-group">    
+                <label for="type_id">Fonction:</label>
+                <select type="text" class="form-control" name="type_id">
+                    @foreach (App\Type::all() as $type)
+                        @if(Auth::user()->type_id == 1)
+                          @if($type->id == 1)
+                            <option value="{{$type->id}}">{{$type->name}}</option>
+                          @endif
+                        @else
+                            @if($type->id != 1)
+                            <option value="{{$type->id}}">{{$type->name}}</option>
+                            @endif
+                        @endif
+                    @endforeach
+                </select>
             </div>
-        </div>
-    </div>
-   
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-  
-    <form action="{{ route('users.update',$user->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-   
-         <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Name:</strong>
-                    <input type="text" name="name" value="{{ $user->name }}" class="form-control" placeholder="Name">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Detail:</strong>
-                    <textarea class="form-control" style="height:150px" name="detail" placeholder="Detail">{{ $user->detail }}</textarea>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-   
-    </form>
+            <button type="submit" class="btn btn-outline-success">Enregistrer</button>
+          </form>
+     </div>
+   </div>
+</div>
 @endsection

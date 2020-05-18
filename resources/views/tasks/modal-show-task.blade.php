@@ -17,7 +17,7 @@
 
                 <div class="form-group add">
                     <label for="description_show">Description</label>
-                    <input type="text" class="form-control" id="description_show" value="" disabled>
+                    <textarea type="text" class="form-control" id="description_show" value="" rows="6" cols="150" disabled></textarea>
                 </div>
 
                 <div class="form-group add">
