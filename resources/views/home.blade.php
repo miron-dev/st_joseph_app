@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.basic')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -16,12 +16,7 @@
 
                     Bienvenue {{Auth::user()->name}}
                     <div class="links">
-                        <p class="mt-3">Accéder aux :</p>
-                        <a href="{{url('task')}}">Travaux</a><br>
-                        @if(Auth::user()->type_id == 1)
-                            <a href="{{url('approve')}}">Approuver utilisateurs</a><br>
-                            <a href="{{url('users')}}">Utilisateurs</a>
-                        @endif
+                        Bienvenue
                     </div>
                 </div>
             </div>

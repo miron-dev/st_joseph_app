@@ -32,16 +32,18 @@ Auth::routes();
 
   Route::middleware(['auth'])->group(function () {
     Route::get('/approval', 'HomeController@approval')->name('approval');
-    Route::get('users/{user}/edit','UserController@edit');
-
+    // Route::get('users/{user}/edit','UserController@edit');
+    
     Route::middleware(['approved'])->group(function () {
-        Route::get('/home', 'HomeController@index')->name('home');
-        Route::resource('task','TaskController');
-        Route::post('addTask','TaskController@addTask');
-        Route::post('editTask','TaskController@editTask');
-        Route::delete('deleteTask','TaskController@deleteTask');
-        Route::resource('users','UserController')->only(['show','edit','update','store']);
-
+      Route::get('/home', 'HomeController@index')->name('home');
+      Route::resource('task','TaskController');
+      Route::post('addTask','TaskController@addTask');
+      Route::post('editTask','TaskController@editTask');
+      Route::delete('deleteTask','TaskController@deleteTask');
+      Route::resource('users','UserController');// A modifier pour les acces selon les types
+      Route::get('upload', 'ImageController@index');
+      Route::post('upload', 'ImageController@upload')->name('upload');
+      Route::post('taskDone','TaskController@taskDone');      
       });
 
       Route::middleware(['admin'])->group(function () {
@@ -51,5 +53,8 @@ Auth::routes();
         Route::get('users/create','UserController@create')->name('users.create');
         Route::get('users','UserController@index')->name('users.index');
         Route::delete('users/{user}','UserController@destroy')->name('users.destroy');
+        Route::post('taskDoneAdmin','TaskController@taskDoneAdmin');
+        Route::post('editPriority','TaskController@editPriority');
+        Route::get('indexTasksDones','TaskController@indexTasksDones');
     });
 });

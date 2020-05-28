@@ -1,11 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.basic')
 
 @section('content')
-    <div class="container">
+    <div class="container mt-5">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col">
                 <div class="card">
-                    <div class="card-header">Liste des utilisateurs à approuver</div>
+                    <div class="card-header">
+                        <h2 class="font-weight-light">Liste des utilisateurs à approuver</h2>
+                    </div>
 
                     <div class="card-body">
 
@@ -16,12 +18,15 @@
                         @endif
 
                         <table class="table">
-                            <tr>
-                                <th>Nom</th>
-                                <th>Email</th>
-                                <th>Enregistré le</th>
-                                <th>Approuver</th>
-                            </tr>
+                            <thead>
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Enregistré le</th>
+                                    <th>Approuver</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                             @forelse ($users as $user)
                                 <tr>
                                     <td>{{ $user->name }}</td>
@@ -33,10 +38,11 @@
                                     </td>
                                 </tr>
                             @empty
-                                <tr>
+                                <tr class="text-center">
                                     <td colspan="4">Pas d'utilisateur</td>
                                 </tr>
                             @endforelse
+                            </tbody>
                         </table>
                     </div>
                 </div>

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
 use App\Type;
+use App\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -61,8 +63,7 @@ class UserController extends Controller
   
         User::create($request->all());
    
-        return redirect()->route('users.index')
-                        ->with('success','User created successfully.');
+        return redirect()->route('users.index')->with('success','Utilisateur créé avec succès.');
     }
    
     /**
@@ -96,15 +97,19 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        // dd($request);
         $request->validate([
             'name' => 'required',
             'email' => 'required',
         ]);
-  
+
         $user->update($request->all());
-  
-        return redirect()->route('users.index')
-                        ->with('success','User updated successfully');
+        
+        if(Auth::id() == 1){
+            return redirect()->back()->with('success','Modification validée');
+        }
+
+        return redirect()->route('users.show',compact('user'))->with('success','Modification validée');
     }
   
     /**
@@ -117,7 +122,6 @@ class UserController extends Controller
     {
         $user->delete();
   
-        return redirect()->route('users.index')
-                        ->with('success','User deleted successfully');
+        return redirect()->route('users.index')->with('success','Utilisateur supprimé avec succès');
     }
 }

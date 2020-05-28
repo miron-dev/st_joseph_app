@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'approved' => \App\Http\Middleware\UserApproved::class, // Permet d'approuver l'inscription des nouveaux utilisateurs
         'admin' => \App\Http\Middleware\CheckAdmin::class, // Vérifie si l'utilisateur est un Administrateur
+        'user' => \App\Http\Middleware\OwnUser::class, // Vérifie un l'utilisateur unique
 
 
     ];

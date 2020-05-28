@@ -22,3 +22,13 @@ un user confirme une tache
 task
 user
 stat
+
+image -> edit/remove
+image pour les traitants
+image profil -> mettre un par defaut
+
+bouton confirmer traitant
+bouton confirmer admin pour finaliser
+
+affichage :
+tache fini

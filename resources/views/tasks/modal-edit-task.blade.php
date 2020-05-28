@@ -11,10 +11,10 @@
             <div class="modal-body">
                 <div id="err">
                 </div>
-                <form class="form-horizontal" role="form" novalidate>
+                <form class="form-horizontal" role="form" novalidate enctype="multipart/form-data">
                     @csrf                    
                     <div class="form-group">
-                        <label for="user">Demande de</label>
+                        <label for="user">Modification par</label>
                         <input type="text" class="form-control" id="user_edit" name="user_edit" placeholder="Nom du demandeur" disabled value={{ Auth::user()->name}}>
                         <input type="hidden" class="form-control" name="user_id" id="user_id_edit" value={{ Auth::id()}}>
                         <input type="hidden" class="form-control" name="task_id" id="task_id_edit" value="">
@@ -22,12 +22,12 @@
 
                     <div class="form-group">
                         <label for="description">Description<span style="color:red">*</span></label>
-                        <textarea type="text" class="form-control" id="description_edit" name="description" placeholder="Your description Here" value="" rows="6" cols="150" required></textarea>
+                        <textarea type="text" class="form-control" id="description_edit" name="description" placeholder="Description" value="" rows="6" cols="150" required></textarea>
                     </div>
 
                     <div class="form-group">
-                        <label for="date">Date<span style="color:red">*</span></label>
-                        <input class="form-control" id="datepicker_edit" name="date" placeholder="Your date Here" value="" required>
+                        <label for="date">Date</label>
+                        <input class="form-control" id="datepicker_edit" name="date" placeholder="Date" value="" required>
                     </div>  
 
                     <label for="buildings_id">Bâtiment(s)</label>
@@ -56,6 +56,18 @@
                             @endforeach
                         </select>
                     </div>
+
+                    {{-- <label for="title">Image/file</label>
+                    <div class="form-group">
+                        <input type="file" id="files_edit" name="files[]" class="form-control-file" multiple>
+                        @if($errors->has('files'))
+                            <span class="help-block text-danger">{{ $errors->first('files') }}</span>
+                        @endif
+                    </div> --}}
+
+                    <div id="image_preview_edit" name="test[]">
+                    </div>
+                    
                     {{-- ne pas oublier de deplacer --}}
                     <div class="modal-footer">
                         <button class="btn btn-warning actionBtn_edit" data-dismiss="modal">

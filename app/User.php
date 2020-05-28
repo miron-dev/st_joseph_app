@@ -52,4 +52,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Type::class);
     }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
+    }
+
+    public function stat_task()
+    {
+        return $this->belongsTo(Stat_Task::class);
+    }
+
 }

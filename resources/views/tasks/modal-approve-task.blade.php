@@ -21,7 +21,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-2"for="aid">Tâche :</label>
+                        <label class="control-label col-sm-2"for="aid">Tâche</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="aid" disabled>
                         </div>
@@ -29,7 +29,7 @@
                     <input type="hidden" id="task_id" name="task_id">
                 </form>
                 <div class="modal-footer">
-                    <button type="button" class="btn actionBtn" data-dismiss="modal">
+                    <button type="button" class="btn actionBtn_approve" data-dismiss="modal">
                         <span id="footer_action_button_approve" class="fa"></span>
                     </button>
                     <button type="button" class="btn btn-warning" data-dismiss="modal">

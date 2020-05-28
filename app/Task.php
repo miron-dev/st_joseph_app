@@ -31,7 +31,7 @@ class Task extends Model
 
     public function priority()
     {
-        return $this->belongsTo(Priority::class)->withTimestamps();
+        return $this->belongsTo(Priority::class);
     }
 
     public function stat()
@@ -57,5 +57,10 @@ class Task extends Model
     public function approve()
     {
         return $this->belongsTo(Approve::class);
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
 }

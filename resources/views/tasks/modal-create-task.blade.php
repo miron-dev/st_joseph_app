@@ -9,7 +9,12 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" role="form">
+                {{-- <ul id="err" type="hidden" class="alert-danger">
+                    @foreach ($errors->all() as $key => $error)
+                        <li class="err{{$key}}">{{ $error }}</li>
+                    @endforeach
+                </ul> --}}
+                <form class="form-horizontal" role="form" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group add">
                         <label for="user">Demande de</label>
@@ -23,7 +28,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="date">Date<span style="color:red">*</span></label>
+                        <label for="date">Date</label>
                         <input class="form-control" id="datepicker" name="date" placeholder="Your date Here" required>
                     </div>  
 
@@ -54,15 +59,26 @@
                         </select>
                     </div>
 
-                    <div class="modal-footer">
-                        <button class="btn btn-warning" type="submit" id="add">
-                            <span class="glyphicon glyphicon-plus"></span>Enregistrer
-                        </button>
-                        <button class="btn btn-warning" type="button" data-dismiss="modal">
-                            <span class="glyphicon glyphicon-remobe"></span>Fermer
-                        </button>
+                    <label for="title">Image/file</label>
+                    <div class="form-group">
+                        <input type="file" id="files" name="files[]" class="form-control-file" multiple>
+                        @if($errors->has('files'))
+                            <span class="help-block text-danger">{{ $errors->first('files') }}</span>
+                        @endif
                     </div>
+
+                    <div id="image_preview" name="test[]"></div>
+
                 </form>
+
+                <div class="modal-footer">
+                    <button class="btn btn-warning" type="submit" id="add">
+                        <span class="glyphicon glyphicon-plus"></span>Enregistrer
+                    </button>
+                    <button class="btn btn-warning" type="button" data-dismiss="modal">
+                        <span class="glyphicon glyphicon-remobe"></span>Fermer
+                    </button>
+                </div>
             </div>
         </div>
     </div>
