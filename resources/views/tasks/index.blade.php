@@ -1,46 +1,52 @@
 @extends('layouts.basic')
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
 
   <div class="row justify-content-center my-3">
       <h2 class="text-center font-weight-light">Liste des travaux</h2>
   </div>
 
-  <div class="row">
-    <a class="create-modal btn mb-3 d-flex align-items-center pl-0">
-      <div class="mr-2 pb-1">
-        <svg class="bi bi-plus-circle" width="1.1em" height="1.1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
-          <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
-          <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-        </svg>
-      </div>
-      <div class="">
-        Ajouter une tâche
-      </div>
-    </a>
-  </div>
+  
 
-  <div class="row">
+  <div class="justify-content-center">
+
+    <div>
+      <a class="create-modal btn mb-3 d-flex align-items-center pl-0">
+        <div class="mr-2 pb-1">
+          <svg class="bi bi-plus-circle" width="1.1em" height="1.1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+            <path fill-rule="evenodd" d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          </svg>
+        </div>
+        <div>
+          Ajouter une tâche
+        </div>
+      </a>
+    </div>
+
     <table class="table table-bordered table-hover" id="table">
       <thead>
         <tr class="text-center font-weight-light">
           @if(Auth::user()->type_id == 1)
+          <th>Crée le</th>
           <th>Priorité</th>
           @endif
           <th>No</th>
           <th>Auteur</th>
           <th>Description</th>
           <th>Date</th>
-          <th>Bâtiment(s)</th>
-          <th>Salle(s)</th>
+          <th>Bât</th>
+          <th>Sal</th>
+          @if(Auth::user()->type_id === 1)
           <th>Traitant(s)</th>
+          @endif
           <th>Action</th>
           <th>Approuvée</th>
           @if(Auth::user()->type_id == 1)
-          {{-- <th>Etat</th> --}}
           <th>Fini</th>
+          <th>+info</th>
           @endif
         </tr>
       </thead>
@@ -50,7 +56,8 @@
         @foreach ($tasks as $task)
           <tr class="task{{$task->id}}">
               @if(Auth::user()->type_id == 1)
-                <td>
+                <td class="align-middle">{{ $task->created_at->format('d/m/Y') }}</td>
+                <td class="align-middle">
                   <input type="text" class="form-control select_priority text-center" id="select_priority{{$task->id}}" value="{{$task->priority->name}}" disabled>
                   <a class="edit-priority-modal btn btn-sm"
                       data-id="{{$task->id}}"
@@ -60,10 +67,10 @@
                     </u></a>
                 </td>
               @endif
-              <td>{{ $task->id }}</td>
-              <td>{{ $task->user->name }}</td>
-              <td>{{ $task->description }}</td>
-              <td>{{ $task->date }}</td>
+              <td class="align-middle">{{ $task->id }}</td>
+              <td class="align-middle">{{ $task->user->name }}</td>
+              <td class="align-middle text-truncate" style="max-width: 150px;">{{ $task->description }}</td>
+              <td class="align-middle">{{ $task->date }}</td>
               <td class="align-middle">
                 @foreach(App\Task::find($task->id)->buildings as $building)
                   <span class="text-center"> {{ $building->name}} </span><br>
@@ -74,12 +81,14 @@
                   <span> {{ $classroom->name}} </span><br>
                 @endforeach
               </td>
+              @if(Auth::user()->type_id == 1)
               <td class="align-middle">
                 @foreach(App\Task::find($task->id)->users as $user)
                   <span> {{ $user->name}} </span>  
                 @endforeach
               </td>
-              <td>
+              @endif
+              <td class="align-middle">
                 <div class="btn-group">
                   <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Action
@@ -92,6 +101,7 @@
                       data-user="{{$task->user->name}}"
                       data-description="{{$task->description}}" 
                       data-date="{{$task->date}}"
+                      data-date_create="{{ $task->created_at->format('d/m/Y') }}"
                       data-buildings="{{ $task->buildings->pluck('name') }}"
                       data-classrooms="{{ $task->classrooms->pluck('name') }}"
                       data-users_task="{{ $task->users->pluck('name') }}"
@@ -111,10 +121,14 @@
                       data-user="{{$task->user->name}}" 
                       data-description="{{$task->description}}" 
                       data-date="{{$task->date}}"
+                      data-date_create="{{ $task->created_at->format('d/m/Y') }}"
                       data-buildings_name="{{ $task->buildings->pluck('name') }}"
                       data-buildings="{{ $task->buildings->pluck('id') }}"
                       data-classrooms="{{ $task->classrooms->pluck('id') }}"
                       data-users_task="{{ $task->users->pluck('id') }}"
+                      @if(Auth::user()->type_id == 1)
+                      data-is_admin="{{ Auth::user()->type_id }}"
+                      @endif
                       data-images="{{ App\Image::where('imageable_id',$task->id)->get() }}">
                       <svg class="mr-2 bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"/>
@@ -147,7 +161,7 @@
                   </div>
                 </div>
               </td>
-              <td>
+              <td class="align-middle">
                 <input class="form-control text-center" id="approveName{{$task->id}}" data-approveName="{{ $task->approve->name }}" value="{{ $task->approve->name }}" disabled>
                 @if(Auth::user()->type_id == 1)
                   <a class="edit-approve-modal btn btn-sm approve{{$task->id}}" 
@@ -159,8 +173,7 @@
                 @endif
               </td>
               @if(Auth::user()->type_id == 1)
-                {{-- <td>En cours</td> --}}
-                <td id="done_admin">
+                <td id="done_admin" class="align-middle">
                   @if(App\Stat_Task::where('task_id',$task->id)->where('done_worker',1)->first())
                   Vérifier
                   <input type="checkbox" name="done_admin" class="done_admin" @if(App\Stat_Task::where('task_id',$task->id)->where('done_admin', 1)->first()) {{ "checked" }} @endif
@@ -170,6 +183,7 @@
                   Non
                   @endif
                 </td>
+                <td class="align-middle">i</td>
               @endif
           </tr>
         @endforeach
@@ -178,6 +192,9 @@
     {{-- {{$tasks->links()}} --}}
   </div>
 
+  {{-- <div id="includeData">
+  </div> --}}
+  
   @include('tasks.modal-create-task')
   @include('tasks.modal-show-task')
   @include('tasks.modal-edit-task')
@@ -185,5 +202,6 @@
   @include('tasks.modal-approve-task')
   @include('tasks.modal-priority-task')
   @include('tasks.modal-image-task')
+
 </div>
 @endsection

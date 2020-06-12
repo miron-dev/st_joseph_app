@@ -17,6 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['middleware' => ['guest']], function () {
+  Route::get('/', function () {
+    return view('auth/login');
+  });
+});
+
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
@@ -40,7 +46,7 @@ Auth::routes();
       Route::post('addTask','TaskController@addTask');
       Route::post('editTask','TaskController@editTask');
       Route::delete('deleteTask','TaskController@deleteTask');
-      Route::resource('users','UserController');// A modifier pour les acces selon les types
+      Route::resource('users','UserController')->except(['create'])->middleware('user');// A modifier pour les acces selon les types
       Route::get('upload', 'ImageController@index');
       Route::post('upload', 'ImageController@upload')->name('upload');
       Route::post('taskDone','TaskController@taskDone');      

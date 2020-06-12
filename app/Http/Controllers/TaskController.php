@@ -60,10 +60,12 @@ class TaskController extends Controller
             $task = new Task;
             $task->description = $request->description;
             $task->date = ($request->date) ? $request->date : '';
-            $task->user_id = $request->user_id;
+            $task->user_id = (int)$request->user_id;
             $task->approve_id = $this->approve;
             $task->save();
             
+            
+            $task->date_create = $task->created_at->format('d/m/Y');
             $task->priorityName = Priority::find(1)->name;
             $task->priority_id = Priority::find(1)->id;
             /**
@@ -105,21 +107,22 @@ class TaskController extends Controller
                 $task->classroomsNames = "";
             }
 
-
-            //Récupérer les id des Traitants
-            $users_id = $request->input('users_id');
-            if($users_id) // ajouter cette fonctionnalité si les champs ne sont pas requis
-            {
-                $users_id = explode(',',$users_id);
-                $task->users_id = array_map('intval',$users_id);
-                $task->users()->attach($users_id);
-                //Récupérer les noms des Traitants
-                $usersNames = $task->users()->pluck('name')->toArray();
-                $task->usersNames = $usersNames;
-            } else {
-                $task->users_id = [];
-                $task->usersNames = "";
-            }
+            if(Auth::user()->type_id == 1):
+                //Récupérer les id des Traitants
+                $users_id = $request->input('users_id');
+                if($users_id) // ajouter cette fonctionnalité si les champs ne sont pas requis
+                {
+                    $users_id = explode(',',$users_id);
+                    $task->users_id = array_map('intval',$users_id);
+                    $task->users()->attach($users_id);
+                    //Récupérer les noms des Traitants
+                    $usersNames = $task->users()->pluck('name')->toArray();
+                    $task->usersNames = $usersNames;
+                } else {
+                    $task->users_id = [];
+                    $task->usersNames = "";
+                }
+            endif;
 
             //Récupérer l'id Approve
             $approveId = $task->approve()->pluck('id')->toArray();
@@ -175,7 +178,6 @@ class TaskController extends Controller
         $task->date = ($request->date) ? $request->date : '';
         $task->save();
 
-
         //Récupérer les id des Bâtiments
         $buildings_id = $request->input('buildings_id');
         // dd($buildings_id);
@@ -215,6 +217,13 @@ class TaskController extends Controller
 
         //Récupérer le type_id du user
         $task->userTypeId = Type::find($task->user->type_id)->id;
+
+        //Récupérer le type_id du user actuelle
+        $task->is_admin = Auth::user()->type_id;
+
+        // Récupère la date de creation
+        $task->date_create = $task->created_at->format('d/m/Y');
+
         
         //============ Images uploads ============
         $file = json_decode($request->file);

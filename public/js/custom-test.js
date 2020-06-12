@@ -1,253 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>St Joseph</title>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    {{-- datepicker --}}
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-    {{-- Select2 Styles --}}
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
-    {{-- Bootstrap --}}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
-    {{-- Toggle menu style --}}
-    <style>
-        /*!
-        * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)
-        * Copyright 2013-2019 Start Bootstrap
-        * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
-        */
-        body {
-        overflow-x: hidden;
-        }
-
-        #sidebar-wrapper {
-        min-height: 100vh;
-        margin-left: -15rem;
-        -webkit-transition: margin .25s ease-out;
-        -moz-transition: margin .25s ease-out;
-        -o-transition: margin .25s ease-out;
-        transition: margin .25s ease-out;
-        }
-
-        #sidebar-wrapper .sidebar-heading {
-        padding: 0.875rem 1.25rem;
-        font-size: 1.2rem;
-        }
-
-        #sidebar-wrapper .list-group {
-        width: 15rem;
-        }
-
-        #page-content-wrapper {
-        min-width: 100vw;
-        }
-
-        #wrapper.toggled #sidebar-wrapper {
-        margin-left: 0;
-        }
-
-        @media (min-width: 768px) {
-        #sidebar-wrapper {
-            margin-left: 0;
-        }
-
-        #page-content-wrapper {
-            min-width: 0;
-            width: 100%;
-        }
-
-        #wrapper.toggled #sidebar-wrapper {
-            margin-left: -15rem;
-        }
-        }
-    </style>
-
-    {{-- Datatables styles --}}
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/r-2.2.5/datatables.min.css"/>
-
-    <style>
-
-        /* div.sticky {
-        position: -webkit-sticky;
-        position: sticky;
-        top: 0;
-        background-color: yellow;
-        padding: 50px;
-        font-size: 20px;
-        } */
-
-        
-    </style>
-
-    <title>Document</title>
-</head>
-<body>
-    <div class ="container-fluid px-0" id="app">
-        <main class="d-flex" id="wrapper">
-
-          <!-- Sidebar -->
-          <div class="bg-light border-right" id="sidebar-wrapper">
-            <div class="sidebar-heading">{{Auth::user()->name}}</div>
-            <div class="list-group list-group-flush">
-                <a href="{{url('home')}}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-                <a href="{{url('users/'.Auth::id())}}" class="list-group-item list-group-item-action bg-light">Profile</a>
-                @if(Auth::user()->type_id !== 1)
-                <a href="{{url('task')}}" class="list-group-item list-group-item-action bg-light">Travaux</a>
-                @endif
-
-                @if(Auth::user()->type_id == 1)
-                    <span class="text-center text-muted text-light align-middle pt-2">Admin</span>
-                    <div class="dropdown-divider"></div>
-                    <a href="{{url('approve')}}" class="list-group-item list-group-item-action bg-light">Approuver utilisateurs 
-                        @if(App\User::where('approved_at', null)->count() > 0)
-                        <span class="badge badge-danger">{{App\User::where('approved_at', null)->count()}}</span>
-                        @endif
-                    </a>
-                    <a href="{{url('users')}}" class="list-group-item list-group-item-action bg-light">Utilisateurs</a>
-                    <div class="accordion" id="accordionExample">
-                        <div class="card bg-light" style="border: none">
-                          <div class="card-header bg-light p-0 ml-2" id="headingOne">
-                            <h2 class="mb-0">
-                              <a class="btn collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Travaux
-                              </a>
-                            </h2>
-                          </div>
-                      
-                          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <div class="card-body bg-light">
-                                <a href="{{url('task')}}" class="list-group-item list-group-item-action bg-light">Liste des travaux</a>
-                                <a href="{{url('indexTasksDones')}}" class="list-group-item list-group-item-action bg-light">Travaux terminés</a> 
-                            </div>
-                          </div>
-    
-                        </div>
-                    </div>
-                @endif
-            </div>
-          </div>
-          <!-- /#sidebar-wrapper -->
-      
-          <!-- Page Content -->
-          <div id="page-content-wrapper">
-      
-            <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top border-bottom ">
-                <a class="btn" id="menu-toggle">
-                    Menu
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-      
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-        
-                    </ul>
-        
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item">
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                document.getElementById('logout-form').submit();">
-                                    {{ __('Se deconnecter') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </nav>
-      
-            <div class="container-fluid">
-            </div>
-              @yield('content')
-          </div>
-          <!-- /#page-content-wrapper -->
-      
-        </main>
-    </div>
-</body>
-
-
-{{-- Bootstrap Scripts --}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-{{-- toggle button / basic.blade.php --}}
-<script>
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-</script>
-
-{{-- Datepicker --}}
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    $( function() {
-      $( "#datepicker" ).datepicker({minDate: 0, dateFormat: 'dd/mm/yy'});
-      $( "#datepicker_edit" ).datepicker({minDate: 0, dateFormat: 'dd/mm/yy'});
-    } );
-</script>
-
-{{-- Select2 Scripts --}}
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-<script>
-    //Select2
-    $(document).ready(function() {
-        $('.js-example-basic-multiple').select2({
-            theme:"classic",
-            tags: true,
-        });
-    });
-</script>
-
-{{-- Datatables --}}
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/r-2.2.5/datatables.min.js"></script>
-<script>
-    $(document).ready( function () {
-        $('#table').DataTable();
-    } );
-</script>
-
-{{-- <script type="text/javascript" src="{{ asset('js/custom.js') }}"></script> --}}
-<script type="text/javascript">
-
-   $.ajaxSetup({
+    $.ajaxSetup({
         headers: {
             // 'X-CSRF-Token': "{{ csrf_token() }}"
             'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
@@ -275,14 +26,14 @@
             $('.modal-title').text('Créer une tâche');
         });
         
-        $(document).on('click','#add',function() {
+        $(document).on('click','#add',function(e) {
+            e.preventDefault();
             var formData = new FormData();
             var getFiles = $('#files')[0].files;
             for (let i = 0; i < getFiles.length; i++) {
                 formData.append('files['+i+']', files.files[i]);
-                console.log(files.files[i])
             }
-            formData.append('files', test);
+            // formData.append('_token', "{{ csrf_token() }}");
             formData.append('user_id', $('#user_id').val());
             formData.append('description', $('#description').val());
             formData.append('date', $('input[name=date]').val());
@@ -298,7 +49,6 @@
                 processData: false,
                 data: formData,
                 success: function(data){
-                    console.log('data',data)
                     data.description = data.description.replace(/'/g, "&#39;").replace(/"/g,"&#34;");   
                     if (!$.isEmptyObject(data.errors)) {
                         alert('Le champ Description est requis');
@@ -307,7 +57,6 @@
                         {
                             $('#table').append(
                                 "<tr class='task" + data.id + "'>"+
-                                    "<td class='align-middle'>" + data.date_create + "</td>"+
                                     "<td>" + 
                                         `<input type="text" class="form-control select_priority text-center" id="select_priority`+ data.id +`" value="`+data.priorityName+`" disabled>
                                         <a class="edit-priority-modal btn btn-sm" 
@@ -317,14 +66,14 @@
                                             Priorité<i class="fa fa-check" style="color:white"></i>
                                         </u></a>`
                                     +"</td>"+
-                                    "<td class='align-middle'>" + data.id + "</td>"+
-                                    "<td class='align-middle'>" + data.user + "</td>"+
-                                    "<td class='align-middle text-truncate' style='max-width: 150px;'>" + data.description + "</td>"+
-                                    "<td class='align-middle'>" + data.date + "</td>"+
-                                    "<td class='align-middle'>" + data.buildingsNames + "</td>"+
-                                    "<td class='align-middle'>" + data.classroomsNames + "</td>"+
-                                    "<td class='align-middle'>" + data.usersNames + "</td>"+
-                                    "<td class='align-middle'>"+
+                                    "<td>" + data.id + "</td>"+
+                                    "<td>" + data.user + "</td>"+
+                                    "<td>" + data.description + "</td>"+
+                                    "<td>" + data.date + "</td>"+
+                                    "<td>" + data.buildingsNames + "</td>"+
+                                    "<td>" + data.classroomsNames + "</td>"+
+                                    "<td>" + data.usersNames + "</td>"+
+                                    "<td class='text-center'>"+
                                         `<div class="btn-group">
                                             <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Action
@@ -337,7 +86,6 @@
                                                     data-date="`+data.date+`"
                                                     data-buildings="`+data.buildingsNames+`"
                                                     data-classrooms="`+data.classroomsNames+`"
-                                                    data-date_create="`+data.date_create+`"
                                                     data-users_task="`+data.usersNames+`">
                                                     <svg class="mr-2 bi bi-eye" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.134 13.134 0 001.66 2.043C4.12 11.332 5.88 12.5 8 12.5c2.12 0 3.879-1.168 5.168-2.457A13.134 13.134 0 0014.828 8a13.133 13.133 0 00-1.66-2.043C11.879 4.668 10.119 3.5 8 3.5c-2.12 0-3.879 1.168-5.168 2.457A13.133 13.133 0 001.172 8z" clip-rule="evenodd"/>
@@ -354,7 +102,6 @@
                                                     data-buildings="[` + data.buildings_id + `]"
                                                     data-classrooms="[`+data.classrooms_id+`]"
                                                     data-users_task="[`+data.users_id+`]"
-                                                    data-date_create="`+data.date_create+`"
                                                     data-images=`+ JSON.stringify(data.files) +`>
                                                     <svg class="mr-2 bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
@@ -395,8 +142,7 @@
                                             Valider<i class="fa fa-check" style="color:white"></i>
                                         </u></a>
                                     </td>`+
-                                    `<td class='align-middle'> Non </td>`+
-                                    `<td class='align-middle'> i </td>`+
+                                    `<td> Non </td>`+
                                 "</tr>"
                             );
                             // $('#err').remove();
@@ -405,13 +151,14 @@
                         {
                             $('#table').append(
                                 "<tr class='task" + data.id + "'>"+
-                                    "<td class='align-middle'>" + data.id + "</td>"+
-                                    "<td class='align-middle'>" + data.user + "</td>"+
-                                    "<td class='align-middle'>" + data.description + "</td>"+
-                                    "<td class='align-middle'>" + data.date + "</td>"+
-                                    "<td class='align-middle'>" + data.buildingsNames + "</td>"+
-                                    "<td class='align-middle'>" + data.classroomsNames + "</td>"+
-                                    "<td class='align-middle'>"+
+                                    "<td>" + data.id + "</td>"+
+                                    "<td>" + data.user + "</td>"+
+                                    "<td>" + data.description + "</td>"+
+                                    "<td>" + data.date + "</td>"+
+                                    "<td>" + data.buildingsNames + "</td>"+
+                                    "<td>" + data.classroomsNames + "</td>"+
+                                    "<td>" + data.usersNames + "</td>"+
+                                    "<td class='text-center'>"+
                                         `<div class="btn-group">
                                             <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 Action
@@ -423,7 +170,8 @@
                                                     data-description="`+data.description+`" 
                                                     data-date="`+data.date+`"
                                                     data-buildings="`+data.buildingsNames+`"
-                                                    data-classrooms="`+data.classroomsNames+`">
+                                                    data-classrooms="`+data.classroomsNames+`"
+                                                    data-users_task="`+data.usersNames+`">
                                                     <svg class="mr-2 bi bi-eye" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.134 13.134 0 001.66 2.043C4.12 11.332 5.88 12.5 8 12.5c2.12 0 3.879-1.168 5.168-2.457A13.134 13.134 0 0014.828 8a13.133 13.133 0 00-1.66-2.043C11.879 4.668 10.119 3.5 8 3.5c-2.12 0-3.879 1.168-5.168 2.457A13.133 13.133 0 001.172 8z" clip-rule="evenodd"/>
                                                     <path fill-rule="evenodd" d="M8 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM4.5 8a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0z" clip-rule="evenodd"/>
@@ -438,7 +186,8 @@
                                                     data-date="`+data.date+`"
                                                     data-buildings="[` + data.buildings_id + `]"
                                                     data-classrooms="[`+data.classrooms_id+`]"
-                                                    data-images=[`+ JSON.stringify(data.files) +`]>
+                                                    data-users_task="[`+data.users_id+`]"
+                                                    data-images=`+ JSON.stringify(data.files) +`>
                                                     <svg class="mr-2 bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
                                                     <path fill-rule="evenodd" d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 00.5.5H4v.5a.5.5 0 00.5.5H5v.5a.5.5 0 00.5.5H6v-1.5a.5.5 0 00-.5-.5H5v-.5a.5.5 0 00-.5-.5H3z" clip-rule="evenodd"/>
@@ -469,7 +218,7 @@
                                             </div>
                                         </div>`
                                     +"</td>"+
-                                    `<td><input class=" form-control text-center" id="approveName" data-approveName="`+data.approveName+`" value="`+data.approveName+`" disabled></td>`+
+                                    "<td class='text-center'>" + data.approveName + "</td>"+
                                 "</tr>"
                             );
                         }
@@ -564,15 +313,14 @@
                     data.description = data.description.replace(/'/g, "&#39;").replace(/"/g,"&#34;");   
                     if(!$.isEmptyObject(data.errors))
                     {
-                        alert('Le champs Description est requis');
+                        alert('Les champs Description et Date sont requisent');
                     } 
                     else
                     {
-                        if(data.is_admin == 1)
+                        if(data.userTypeId == 1)
                         {
                             $('.task' + data.id).replaceWith(" "+
                             "<tr class='task" + data.id + "'>"+
-                                "<td class='align-middle'>" + data.date_create + "</td>"+
                                 "<td>" +
                                     `<input type="text" class="form-control select_priority text-center" id="select_priority`+ data.id +`" value="`+data.priorityName+`" disabled>
                                     <a class="edit-priority-modal btn btn-sm" 
@@ -582,14 +330,14 @@
                                         Priorité<i class="fa fa-check" style="color:white"></i>
                                     </u></a>`
                                 +"</td>"+
-                                "<td class='align-middle'>" + data.id + "</td>"+
-                                "<td class='align-middle'>" + data.userName + "</td>"+
-                                "<td class='align-middle'>" + data.description + "</td>"+
-                                "<td class='align-middle'>" + data.date + "</td>"+
-                                "<td class='align-middle'>" + data.buildingsNames + "</td>"+
-                                "<td class='align-middle'>" + data.classroomsNames + "</td>"+
-                                "<td class='align-middle'>" + data.usersNames + "</td>"+
-                                `<td class='align-middle'>`+
+                                "<td>" + data.id + "</td>"+
+                                "<td>" + data.userName + "</td>"+
+                                "<td>" + data.description + "</td>"+
+                                "<td>" + data.date + "</td>"+
+                                "<td>" + data.buildingsNames + "</td>"+
+                                "<td>" + data.classroomsNames + "</td>"+
+                                "<td>" + data.usersNames + "</td>"+
+                                `<td class="text-center">`+
                                     `<div class="btn-group">
                                         <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Action
@@ -600,7 +348,6 @@
                                                 data-user="`+data.userName+`" 
                                                 data-description="`+data.description+`" 
                                                 data-date="`+data.date+`"
-                                                data-date_create="`+data.date_create+`"
                                                 data-buildings="`+data.buildingsNames+`"
                                                 data-classrooms="`+data.classroomsNames+`"
                                                 data-users_task="`+data.usersNames+`">
@@ -616,7 +363,6 @@
                                                 data-user_id="`+data.user.id+`" 
                                                 data-description="`+data.description+`" 
                                                 data-date="`+data.date+`"
-                                                data-date_create="`+data.date_create+`"
                                                 data-buildings="[`+ data.buildings_id+ `]"
                                                 data-classrooms="[`+data.classrooms_id+`]"
                                                 data-users_task="[`+data.users_id+`]"
@@ -660,20 +406,32 @@
                                         Valider<i class="fa fa-check" style="color:white"></i>
                                     </u></a>
                                 </td>`+
-                                `<td class='align-middle'> Non </td>`+
-                                `<td class='align-middle'> i </td>`+
+                                `<td> Non </td>`+
                             "</tr>"
                         );
                         } else 
                         {
                             $('.task' + data.id).replaceWith(" "+
                                 "<tr class='task" + data.id + "'>"+
-                                    "<td class='align-middle'>" + data.id + "</td>"+
-                                    "<td class='align-middle'>" + data.userName + "</td>"+
-                                    "<td class='align-middle'>" + data.description + "</td>"+
-                                    "<td class='align-middle'>" + data.date + "</td>"+
-                                    "<td class='align-middle'>" + data.buildingsNames + "</td>"+
-                                    "<td class='align-middle'>" + data.classroomsNames + "</td>"+
+                                    "<td>" + data.id + "</td>"+
+                                    "<td>" + data.userName + "</td>"+
+                                    "<td>" + data.description + "</td>"+
+                                    "<td>" + data.date + "</td>"+
+                                    "<td><ul>"+
+                                        $.each(data.buildingsNames, function( index, value ) {
+                                            "<li>"+ value +"</li>"
+                                        })
+                                    +"</ul></td>"+
+                                    "<td><ul>"+
+                                        $.each(data.classroomsNames, function( index, value ) {
+                                            "<li>"+ value +"</li>"
+                                        })
+                                    +"</ul></td>"+
+                                    "<td><ul>"+
+                                        $.each(data.usersNames, function( index, value ) {
+                                            "<li>"+ value +"</li>"
+                                        })
+                                    +"</ul></td>"+
                                     `<td class="text-center">`+
                                         `<div class="btn-group">
                                             <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -687,6 +445,7 @@
                                                     data-date="`+data.date+`"
                                                     data-buildings="`+data.buildingsNames+`"
                                                     data-classrooms="`+data.classroomsNames+`"
+                                                    data-users_task="`+data.usersNames+`">
                                                     <svg class="bi bi-eye" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.134 13.134 0 001.66 2.043C4.12 11.332 5.88 12.5 8 12.5c2.12 0 3.879-1.168 5.168-2.457A13.134 13.134 0 0014.828 8a13.133 13.133 0 00-1.66-2.043C11.879 4.668 10.119 3.5 8 3.5c-2.12 0-3.879 1.168-5.168 2.457A13.133 13.133 0 001.172 8z" clip-rule="evenodd"/>
                                                     <path fill-rule="evenodd" d="M8 5.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM4.5 8a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0z" clip-rule="evenodd"/>
@@ -701,6 +460,7 @@
                                                     data-date="`+data.date+`"
                                                     data-buildings="[`+ data.buildings_id+ `]"
                                                     data-classrooms="[`+data.classrooms_id+`]"
+                                                    data-users_task="[`+data.users_id+`]"
                                                     data-images=`+ JSON.stringify(data.file) +`>
                                                     <svg class="bi bi-pencil" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                                     <path fill-rule="evenodd" d="M11.293 1.293a1 1 0 011.414 0l2 2a1 1 0 010 1.414l-9 9a1 1 0 01-.39.242l-3 1a1 1 0 01-1.266-1.265l1-3a1 1 0 01.242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z" clip-rule="evenodd"/>
@@ -732,7 +492,7 @@
                                             </div>
                                         </div>`
                                     +"</td>"+
-                                    `<td><input class=" form-control text-center" id="approveName" data-approveName="`+data.approveName+`" value="`+data.approveName+`" disabled></td>`+
+                                    `<td class="text-center" id="approveName" data-approveName="`+data.approveName+`">`+data.approveName+`</td>`+
                                 "</tr>"
                             );
                         }
@@ -767,6 +527,7 @@
                 url: 'deleteTask',
                 dataType: 'json',
                 data: {
+                    '_token': '{{ csrf_token() }}',
                     'id': $('.id').text(),
                     'buildings_id' : $(this).data('buildings'),
                     'classrooms_id' : $(this).data('classrooms'),
@@ -817,6 +578,7 @@
                 url: 'approveTask',
                 data: 
                 {
+                    '_token': '{{ csrf_token() }}',
                     'id': $('.id').text(),
                     'approve_id': $("#approveID").val()
                 },
@@ -933,6 +695,7 @@
                     url: 'editPriority',
                     data: 
                     {
+                        '_token': '{{ csrf_token() }}',
                         'id': $('.id').text(),
                         'priority_id': $("#priorityID").val()
                     },
@@ -973,8 +736,3 @@
             $('.modal-title').text('Voir les images');
         });
     // ========================================== End Modal image ==========================================
-
-</script>
-
-
-</html>

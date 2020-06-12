@@ -50,6 +50,7 @@
                         </select>
                     </div>
 
+                    @if(Auth::user()->type_id == 1)
                     <label for="users_id">Traitant(s)</label>
                     <div class="form-group">
                         <select class="form-control js-example-basic-multiple" id="users_id" name="users_id[]" style="width:100%" multiple="multiple">
@@ -58,6 +59,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endif
 
                     <label for="title">Image/file</label>
                     <div class="form-group">
