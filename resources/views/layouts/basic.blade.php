@@ -282,7 +282,6 @@
                 formData.append('files['+i+']', files.files[i]);
                 console.log(files.files[i])
             }
-            formData.append('files', test);
             formData.append('user_id', $('#user_id').val());
             formData.append('description', $('#description').val());
             formData.append('date', $('input[name=date]').val());
