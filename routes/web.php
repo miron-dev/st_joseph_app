@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['guest']], function () {
   Route::get('/', function () {
-    return view('auth/login');
+    return view('login');
   });
 });
 
