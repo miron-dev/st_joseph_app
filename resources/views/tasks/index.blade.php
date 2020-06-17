@@ -46,7 +46,7 @@
           <th>Approuvée</th>
           @if(Auth::user()->type_id == 1)
           <th>Fini</th>
-          <th>+info</th>
+          {{-- <th>+info</th> --}}
           @endif
         </tr>
       </thead>
@@ -183,7 +183,7 @@
                   Non
                   @endif
                 </td>
-                <td class="align-middle">i</td>
+                {{-- <td class="align-middle">i</td> --}}
               @endif
           </tr>
         @endforeach

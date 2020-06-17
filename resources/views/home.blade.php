@@ -15,9 +15,6 @@
                     @endif
 
                     Bienvenue {{Auth::user()->name}}
-                    <div class="links">
-                        Bienvenue
-                    </div>
                 </div>
             </div>
         </div>
